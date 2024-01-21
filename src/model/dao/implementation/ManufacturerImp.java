@@ -57,9 +57,29 @@ public class ManufacturerImp implements ManufacturerDAO {
     public void deleteById(Integer id) {
 
     }
-
     @Override
-    public void findById(Integer id) {
+    public Manufacturer findById(Integer id) {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Manufacturer manufacturer = new Manufacturer();
+        try {
+            preparedStatement = connection.prepareStatement(
+                    "SELECT Id, Name FROM manufacturer "
+                    +"WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
 
+            preparedStatement.setInt(1, id);
+
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()) {
+                manufacturer.setId(resultSet.getInt("Id"));
+                manufacturer.setName(resultSet.getString("Name"));
+            }
+            return manufacturer;
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeStatement(preparedStatement);
+            DB.closeResultSet(resultSet);
+        }
     }
 }
