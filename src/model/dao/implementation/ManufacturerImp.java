@@ -40,6 +40,7 @@ public class ManufacturerImp implements ManufacturerDAO {
                 }
                 DB.closeResultSet(resultSet);
             }
+
         } catch (SQLException e) {
             throw new DBException(e.getMessage());
         } finally {
@@ -53,15 +54,22 @@ public class ManufacturerImp implements ManufacturerDAO {
 
     }
 
+    private Manufacturer manufacturerCreate (ResultSet resultSet)  throws SQLException {
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setId(resultSet.getInt("Id"));
+        manufacturer.setName(resultSet.getString("Name"));
+        return manufacturer;
+    }
+
     @Override
     public void deleteById(Integer id) {
 
     }
+
     @Override
     public Manufacturer findById(Integer id) {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        Manufacturer manufacturer = new Manufacturer();
         try {
             preparedStatement = connection.prepareStatement(
                     "SELECT Id, Name FROM manufacturer "
@@ -71,10 +79,9 @@ public class ManufacturerImp implements ManufacturerDAO {
 
             resultSet = preparedStatement.executeQuery();
             if(resultSet.next()) {
-                manufacturer.setId(resultSet.getInt("Id"));
-                manufacturer.setName(resultSet.getString("Name"));
+                return manufacturerCreate(resultSet);
             }
-            return manufacturer;
+            return null;
         } catch (SQLException e) {
             throw new DBException(e.getMessage());
         } finally {
