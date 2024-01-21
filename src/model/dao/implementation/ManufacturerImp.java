@@ -51,6 +51,25 @@ public class ManufacturerImp implements ManufacturerDAO {
 
     @Override
     public void update(Manufacturer manufacturer) {
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(
+                    "UPDATE manufacturer "
+                    +"SET Name = ? "
+                    +"WHERE Id = ?");
+
+            preparedStatement.setString(1, manufacturer.getName());
+
+            preparedStatement.setInt(2, manufacturer.getId());
+
+            preparedStatement.executeUpdate();
+
+        }catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        }finally {
+            DB.closeStatement(preparedStatement);
+        }
 
     }
 

@@ -32,8 +32,18 @@ public class Program {
         System.out.println(manufacturer);
          */
 
-        System.out.println("Third Test: deleteById a Manufacturer");
+        /*
+        System.out.println(">> Third Test: deleteById a Manufacturer");
         manufacturerDAO.deleteById(2);
+         */
+
+        /*
+        System.out.println(">> Fourth Test: deleteById a Manufacturer <<");
+        Manufacturer manufacturer = manufacturerDAO.findById(1);
+        manufacturer.setName("Bentley");
+        manufacturerDAO.update(manufacturer);
+        System.out.println(manufacturer);
+         */
 
 
 
