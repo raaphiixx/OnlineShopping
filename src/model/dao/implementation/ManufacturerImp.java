@@ -63,7 +63,21 @@ public class ManufacturerImp implements ManufacturerDAO {
 
     @Override
     public void deleteById(Integer id) {
+        PreparedStatement preparedStatement = null;
 
+        try {
+            preparedStatement = connection.prepareStatement(
+                    "DELETE FROM manufacturer "
+                    +"WHERE Id = ?", Statement.RETURN_GENERATED_KEYS);
+
+            preparedStatement.setInt(1, id);
+            int result = preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeStatement(preparedStatement);
+        }
     }
 
     @Override

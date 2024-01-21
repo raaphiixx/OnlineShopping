@@ -26,9 +26,14 @@ public class Program {
         System.out.println(manufacturer.getId());
          */
 
+        /*
         System.out.println(">> Second Test: findById a Manufacturer <<");
         Manufacturer manufacturer = manufacturerDAO.findById(1);
         System.out.println(manufacturer);
+         */
+
+        System.out.println("Third Test: deleteById a Manufacturer");
+        manufacturerDAO.deleteById(2);
 
 
 
