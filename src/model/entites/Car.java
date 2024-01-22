@@ -105,6 +105,7 @@ public class Car {
                 ", price=" + price +
                 ", color='" + color + '\'' +
                 ", stock=" + stock +
+                ", manufacturerId=" + manufacturer.getName() +
                 '}';
     }
 }

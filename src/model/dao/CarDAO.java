@@ -9,6 +9,6 @@ public interface CarDAO {
     void insert(Car car);
     void deleteById(Integer id);
     void update(Car car);
-    Car findById(Car id);
+    Car findById(Integer id);
     List<Car> findAll();
 }

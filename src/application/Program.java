@@ -7,6 +7,7 @@ import model.dao.ManufacturerDAO;
 import model.entites.Car;
 import model.entites.Manufacturer;
 
+import java.nio.channels.SelectableChannel;
 import java.sql.Connection;
 import java.time.Year;
 import java.util.List;
@@ -56,7 +57,7 @@ public class Program {
         }
         */
 
-
+        /*
         System.out.println(">> Car First Test: Insert <<");
 
         Manufacturer manufacturer = manufacturerDAO.findById(3);
@@ -66,7 +67,12 @@ public class Program {
         carDAO.insert(car);
         System.out.println();
         System.out.println(car.getId());
+        */
 
+        System.out.println(">> Car Second Test: findById <<");
+
+        Car car = carDAO.findById(1);
+        System.out.println(car);
 
         DB.closeConnection();
     }

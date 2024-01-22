@@ -21,6 +21,7 @@ public class CarImp implements CarDAO {
     private Car createCar(ResultSet resultSet, Manufacturer manufacturer) throws SQLException {
         Car car = new Car();
         car.setId(resultSet.getInt("Id"));
+        car.setModel(resultSet.getString("Model"));
         car.setYear(Year.of(resultSet.getInt("Year")));
         car.setPrice(resultSet.getDouble("Price"));
         car.setColor(resultSet.getString("Color"));
@@ -28,6 +29,15 @@ public class CarImp implements CarDAO {
         car.setManufacturer(manufacturer);
         return car;
     }
+
+    private Manufacturer manufacturerCreate (ResultSet resultSet)  throws SQLException {
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setId(resultSet.getInt("Id"));
+        manufacturer.setName(resultSet.getString("ManName"));
+        return manufacturer;
+    }
+
+
 
     @Override
     public void insert(Car car) {
@@ -68,22 +78,46 @@ public class CarImp implements CarDAO {
     }
 
     @Override
+    public Car findById(Integer id) {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(
+                    "SELECT car.*, manufacturer.Name as ManName "
+                    +"FROM car INNER JOIN manufacturer "
+                    +"ON car.ManufacturerId = manufacturer.Id "
+                    +"WHERE car.Id = ?",Statement.RETURN_GENERATED_KEYS);
+
+            preparedStatement.setInt(1, id);
+
+            resultSet = preparedStatement.executeQuery();
+
+            if(resultSet.next()) {
+                Manufacturer manufacturer = manufacturerCreate(resultSet);
+                return createCar(resultSet, manufacturer);
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeStatement(preparedStatement);
+            DB.closeResultSet(resultSet);
+        }
+    }
+
+    @Override
     public void deleteById(Integer id) {
 
     }
 
     @Override
-    public void update(Car car) {
-
-    }
-
-    @Override
-    public Car findById(Car id) {
-        return null;
-    }
-
-    @Override
     public List<Car> findAll() {
         return null;
+    }
+
+    @Override
+    public void update(Car car) {
+
     }
 }
