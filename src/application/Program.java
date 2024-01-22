@@ -10,6 +10,7 @@ import model.entites.Manufacturer;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.Year;
+import java.util.List;
 
 public class Program {
     public static void main(String[] args) {
@@ -45,6 +46,14 @@ public class Program {
         System.out.println(manufacturer);
          */
 
+        /*
+        System.out.println(">> Fifth Test: findAll in Manufacturer <<");
+        List<Manufacturer> list = manufacturerDAO.findAll();
+
+        for(Manufacturer manufacturer : list) {
+            System.out.println(manufacturer);
+        }
+         */
 
 
         DB.closeConnection();

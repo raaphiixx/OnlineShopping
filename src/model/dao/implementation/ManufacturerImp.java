@@ -6,6 +6,8 @@ import model.dao.ManufacturerDAO;
 import model.entites.Manufacturer;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ManufacturerImp implements ManufacturerDAO {
 
@@ -115,6 +117,30 @@ public class ManufacturerImp implements ManufacturerDAO {
                 return manufacturerCreate(resultSet);
             }
             return null;
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeStatement(preparedStatement);
+            DB.closeResultSet(resultSet);
+        }
+    }
+
+    @Override
+    public List<Manufacturer> findAll() {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM Manufacturer", Statement.RETURN_GENERATED_KEYS);
+            resultSet = preparedStatement.executeQuery();
+
+            List<Manufacturer> list = new ArrayList<>();
+
+            while (resultSet.next()) {
+                Manufacturer manufacturer = manufacturerCreate(resultSet);
+                list.add(manufacturer);
+            }
+            return list;
         } catch (SQLException e) {
             throw new DBException(e.getMessage());
         } finally {
