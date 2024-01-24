@@ -10,6 +10,7 @@ import model.entites.Manufacturer;
 import java.nio.channels.SelectableChannel;
 import java.sql.Connection;
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Program {
@@ -69,10 +70,36 @@ public class Program {
         System.out.println(car.getId());
         */
 
+        /*
         System.out.println(">> Car Second Test: findById <<");
 
         Car car = carDAO.findById(1);
         System.out.println(car);
+        */
+
+        /*
+        System.out.println(">> Car Third Test: deleteById <<");
+        carDAO.deleteById(1);
+        */
+
+        /*
+        System.out.println(">> Car Forth Test: update <<");
+        Manufacturer manufacturer = manufacturerDAO.findById(1);
+        Car car = carDAO.findById(2);
+        car.setModel("Continental GT S");
+        car.setManufacturer(manufacturer);
+        car.setPrice(200000.00);
+        carDAO.update(car);
+        */
+
+        System.out.println(">> Car Fifth Test: findAll <<");
+        List<Car> list = carDAO.findAll();
+
+        for (Car cars : list) {
+            System.out.println(cars);
+        }
+
+
 
         DB.closeConnection();
     }

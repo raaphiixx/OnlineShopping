@@ -8,6 +8,7 @@ import model.entites.Manufacturer;
 
 import java.sql.*;
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CarImp implements CarDAO {
@@ -107,17 +108,76 @@ public class CarImp implements CarDAO {
     }
 
     @Override
-    public void deleteById(Integer id) {
+    public List<Car> findAll() {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<Car> list = new ArrayList<>();
 
+        try {
+            preparedStatement = connection.prepareStatement(
+                    "SELECT car.*, manufacturer.Name as ManName "
+                    +"FROM car JOIN manufacturer "
+                    +"ON car.ManufacturerID = manufacturer.Id "
+                    +"ORDER BY Model");
+
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()) {
+                Manufacturer manufacturer = manufacturerCreate(resultSet);
+                Car car = createCar(resultSet, manufacturer);
+                list.add(car);
+            }
+            return list;
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeStatement(preparedStatement);
+            DB.closeResultSet(resultSet);
+        }
     }
 
     @Override
-    public List<Car> findAll() {
-        return null;
+    public void deleteById(Integer id) {
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(
+                    "DELETE FROM car "
+                    +"WHERE Id = ?");
+
+            preparedStatement.setInt(1, id);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeStatement(preparedStatement);
+        }
     }
 
     @Override
     public void update(Car car) {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(
+                    "UPDATE car "
+                    +"SET Model = ?, Year = ?, Price = ?, "
+                    +"Color = ?, Stock = ?, ManufacturerId = ? "
+                    +"WHERE Id = ?", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, car.getModel());
+            preparedStatement.setInt(2, car.getYear().getValue());
+            preparedStatement.setDouble(3, car.getPrice());
+            preparedStatement.setString(4, car.getColor());
+            preparedStatement.setInt(5, car.getStock());
+            preparedStatement.setInt(6, car.getManufacturer().getId());
+            preparedStatement.setInt(7, car.getId());
 
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeStatement(preparedStatement);
+        }
     }
 }
