@@ -3,6 +3,7 @@ package model.dao.implementation;
 import db.DB;
 import db.exception.DBException;
 import model.dao.CostumerDAO;
+import model.entites.Car;
 import model.entites.Costumer;
 
 import java.sql.*;
@@ -143,6 +144,26 @@ public class CostumerImp implements CostumerDAO {
         } finally {
             DB.closeStatement(preparedStatement);
             DB.closeResultSet(resultSet);
+        }
+    }
+
+    @Override
+    public void buy(Car car) {
+        try {
+            preparedStatement = connection.prepareStatement(
+               "UPDATE car "
+                    +"SET Stock = ? "
+                    +"WHERE Id = ?");
+            preparedStatement.setInt(1, car.getStock() - 1);
+            preparedStatement.setInt(2, car.getId());
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage());
+
+        } finally {
+            DB.closeStatement(preparedStatement);
         }
     }
 }

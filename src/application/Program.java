@@ -141,6 +141,17 @@ public class Program {
         System.out.println(costumerDAO.findById(3));
         */
 
+        /*
+        System.out.println(">> Costumer Sixth Test: buy <<");
+        System.out.println("BEFORE: ");
+        Car car = carDAO.findById(2);
+        System.out.println(car);
+
+        System.out.println("AFTER: ");
+        costumerDAO.buy(car);
+        System.out.println(carDAO.findById(2));
+        */
+
         DB.closeConnection();
     }
 }
