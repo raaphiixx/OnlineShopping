@@ -2,12 +2,13 @@ package application;
 
 import db.DB;
 import model.dao.CarDAO;
+import model.dao.CostumerDAO;
 import model.dao.DAOFactory;
 import model.dao.ManufacturerDAO;
 import model.entites.Car;
+import model.entites.Costumer;
 import model.entites.Manufacturer;
 
-import java.nio.channels.SelectableChannel;
 import java.sql.Connection;
 import java.time.Year;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class Program {
 
         ManufacturerDAO manufacturerDAO = DAOFactory.createManufacturerDao();
         CarDAO carDAO = DAOFactory.createCarDao();
+        CostumerDAO costumerDAO = DAOFactory.createCostumerDao();
 
         /*
         System.out.println(">> Manufacturer First Test: insert <<");
@@ -92,14 +94,52 @@ public class Program {
         carDAO.update(car);
         */
 
+        /*
         System.out.println(">> Car Fifth Test: findAll <<");
         List<Car> list = carDAO.findAll();
 
         for (Car cars : list) {
             System.out.println(cars);
         }
+         */
 
+        /*
+        System.out.println(">> Costumer First test: deleteById <<");
+        costumerDAO.deleteById(1);
+        */
 
+        /*
+        System.out.println(">> Costumer Second test: insert <<");
+        Costumer costumer = new Costumer(null, "Daniel", "Ruby");
+        costumerDAO.insert(costumer);
+        System.out.println(costumer);
+        */
+
+        /*
+        System.out.println(">> Costumer Third Test: findById <<");
+        System.out.println(costumerDAO.findById(9));
+        */
+
+        /*
+        System.out.println(">> Costumer Forth Test: findAll <<");
+        List<Costumer> costumers = costumerDAO.findAll();
+        for(Costumer costumer : costumers) {
+            System.out.println(costumer);
+        }
+        */
+
+        /*
+        System.out.println(">> Costumer Fifth Test: update <<");
+        Costumer costumer = costumerDAO.findById(3);
+        System.out.println("OLD NAME: ");
+        System.out.println(costumer);
+
+        costumer.setfName("Luisa");
+        costumer.setlName("Yellow");
+        costumerDAO.update(costumer);
+        System.out.println("NEW NAME: ");
+        System.out.println(costumerDAO.findById(3));
+        */
 
         DB.closeConnection();
     }
